@@ -495,6 +495,9 @@ your extruder heater takes 2 minutes to hit the target on heating.
 //define BlinkM/CyzRgb Support
 //#define BLINKM
 
+// Define NeoPixel Support
+#define NEOPIXELS
+
 /*********************************************************************\
 * R/C SERVO support
 * Sponsored by TrinityLabs, Reworked by codexmas

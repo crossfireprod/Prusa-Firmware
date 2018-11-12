@@ -43,7 +43,9 @@
  *
  */
 
-#include <Adafruit_NeoPixel.h>
+#ifdef NEOPIXELS
+  #include "Adafruit_NeoPixel.h"
+#endif
 
 #include "Marlin.h"
 
