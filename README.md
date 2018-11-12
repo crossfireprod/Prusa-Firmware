@@ -1,3 +1,6 @@
+NOTE: This is a fork of the official Prusa firmware created to add supoprt for driving NeoPixels commanded via GCODE.
+
+
 # 1. Development environment preparation
 
    1. install `"Arduino Software IDE"` for your preferred operating system  
