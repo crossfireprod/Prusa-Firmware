@@ -43,10 +43,6 @@
  *
  */
 
-#ifdef NEOPIXELS
-  #include "Adafruit_NeoPixel.h"
-#endif
-
 #include "Marlin.h"
 
 
@@ -126,6 +122,10 @@
 #endif
 
 #include "mmu.h"
+
+#ifdef NEOPIXELS
+  #include "Adafruit_NeoPixel_Static.h"
+#endif //NEOPIXELS
 
 #define VERSION_STRING  "1.0.2"
 
@@ -291,10 +291,11 @@
 //=============================public variables==============================
 //===========================================================================
 
-// NEOPIXELS?
-#define PIN       84
-#define NUMPIXELS 16
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+#ifdef NEOPIXELS
+  uint8_t pixels[3 * NEOPIXELS_NUMPIXELS];  // 3 Bytes Per Pixel
+  Adafruit_NeoPixel strip = Adafruit_NeoPixel(NEOPIXELS_NUMPIXELS, NEOPIXELS_PIN, NEO_GRB + NEO_KHZ800, pixels);
+#endif //NEOPIXELS
 
 #ifdef SDSUPPORT
 CardReader card;
@@ -1140,13 +1141,12 @@ void list_sec_lang_from_external_flash()
 void setup()
 {
 
-  // NEOPIXELS?
-  pixels.begin();
-  pixels.setPixelColor(1, pixels.Color(150,0,0));
-  pixels.setPixelColor(2, pixels.Color(0,150,0));
-  pixels.setPixelColor(3, pixels.Color(0,0,150));
-  pixels.show();
+  #ifdef NEOPIXELS
+    pinMode(NEOPIXELS_PIN, OUTPUT);
 
+    // Initialize To Off
+    neopixelsSetStrandColor(0, 0, 0);
+  #endif //NEOPIXELS
   
   mmu_init();
   
@@ -1773,12 +1773,6 @@ void setup()
   wdt_enable(WDTO_4S);
 #endif //WATCHDOG
 
-
-
-// NEOPIXELS?
-#define PIN            6
-#define NUMPIXELS      16
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 }
 
@@ -5850,21 +5844,25 @@ Sigma_Exit:
       #endif
       break;
       //TODO: update for all axis, use for loop
-    #ifdef BLINKM
     case 150: // M150
       {
         byte red;
         byte grn;
         byte blu;
-
+        
         if(code_seen('R')) red = code_value();
         if(code_seen('U')) grn = code_value();
         if(code_seen('B')) blu = code_value();
 
-        SendColors(red,grn,blu);
+        #ifdef BLINKM
+          SendColors(red, grn, blu);
+        #endif //BLINKM
+
+        #ifdef NEOPIXELS
+          neopixelsSetStrandColor(red, grn, blu);
+        #endif //NEOPIXELS
       }
       break;
-    #endif //BLINKM
     case 200: // M200 D<millimeters> set filament diameter and set E axis units to cubic millimeters (use S0 to set back to millimeters).
       {
 
@@ -9125,3 +9123,16 @@ if((eSoundMode==e_SOUND_MODE_LOUD)||(eSoundMode==e_SOUND_MODE_ONCE))
 }
 
 #define FIL_LOAD_LENGTH 60
+
+
+#ifdef NEOPIXELS
+void neopixelsSetStrandColor(byte red, byte grn, byte blu)
+{
+  for (byte loop_ctr = 0; loop_ctr < NEOPIXELS_NUMPIXELS; loop_ctr++)
+  {
+    strip.setPixelColor(loop_ctr, strip.Color(red, grn, blu));
+  }
+
+  strip.show();
+}          
+#endif //NEOPIXELS

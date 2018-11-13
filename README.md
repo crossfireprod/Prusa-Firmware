@@ -1,4 +1,12 @@
-NOTE: This is a fork of the official Prusa firmware created to add supoprt for driving NeoPixels commanded via GCODE.
+
+# 0. Prusa + NeoPixels!
+This is a fork of the official [Prusa firmware](https://github.com/prusa3d/Prusa-Firmware) created to add the ability to drive NeoPixels directly with the rambo controller.  Support for [Marlin GCODE M150](http://marlinfw.org/docs/gcode/M150.html) R, G, and B parameters has been implemented when `NEOPIXELS` is defined in `Configuration.h`.  NeoPixel's are driven by [SpenceKonde's Adafruit_NeoPixel_Static](https://github.com/SpenceKonde/Adafruit_NeoPixel_Static) library.
+
+
+
+Prebuilt binary that includes z height changes for the [3030 Haribo Modification](https://github.com/PrusaMK2Users/3030_Haribo_Edition) can be found in the Firmware directory alongside the source code.  If building for your own printer, be sure to setup `configuration.h' as required (detailed below).
+
+Use of this modification of the official Prusa firmware is entirely at your own risk.
 
 
 # 1. Development environment preparation

@@ -495,8 +495,14 @@ your extruder heater takes 2 minutes to hit the target on heating.
 //define BlinkM/CyzRgb Support
 //#define BLINKM
 
-// Define NeoPixel Support
+// Define NeoPixel Support & Configuration Parameters
 #define NEOPIXELS
+
+#ifdef NEOPIXELS
+  #define NEOPIXELS_NUMPIXELS   32  // Hard Max 255
+  #define NEOPIXELS_PIN         84  // Arduino 84 | ATmega 14 (PH2) | MiniRambo1.3a Connector P3 Pin 10
+#endif //NEOPIXELS
+
 
 /*********************************************************************\
 * R/C SERVO support

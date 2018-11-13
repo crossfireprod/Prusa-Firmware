@@ -474,3 +474,7 @@ void M600_load_filament();
 void M600_load_filament_movements();
 void M600_wait_for_user();
 void M600_check_state();
+
+#ifdef NEOPIXELS
+void neopixelsSetStrandColor(byte red, byte grn, byte blu);
+#endif //NEOPIXELS
